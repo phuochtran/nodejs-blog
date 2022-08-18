@@ -14,9 +14,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('combined'));
 
 app.use(
-  express.urlencoded({
-    extended: true,
-  }),
+    express.urlencoded({
+        extended: true,
+    }),
 );
 app.use(express.json());
 
@@ -33,10 +33,11 @@ route(app);
 
 // app.get('/search', (req, res) => res.render('search'))
 
-                    app.listen(port, 
-                        
-                        () =>
-                console.log(`
+app.listen(
+    port,
+
+    () =>
+        console.log(`
   
                 Example app listening at http://localhost:${port}`),
 );
