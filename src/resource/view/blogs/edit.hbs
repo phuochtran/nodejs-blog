@@ -1,0 +1,23 @@
+<div class="mt-4">
+    <h3>EDIT BLOG {{blog._id}}</h3>
+
+    <form class="mt-4" method="POST" action="/blog/{{blog._id}}?_method=PUT">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{blog.title}}">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description">{{blog.description}}</textarea>
+        </div>
+                <div class="form-group">
+            <label for="slug">Slug</label>
+            <input type="text" class="form-control" id="slug" name="slug" value="{{blog.slug}}">
+        </div>
+        <div class="form-group">
+            <label for="videoId">Video ID</label>
+            <input type="text" class="form-control" id="videoId" name="videoId" value="{{blog.videoId}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>

@@ -1,0 +1,29 @@
+const Blog = require('../models/Blog');
+const { mongoosesToObject } = require('../../util/mongoose');
+
+class MeController {
+    // [GET]-/me/stored/blogs
+    storedBlogs(req, res, next) {
+        Promise.all([Blog.find({}), Blog.countDocumentsDeleted()])
+            .then(([blogs, deletedCount]) =>
+                res.render('me/stored-blogs', {
+                    deletedCount,
+                    blogs: mongoosesToObject(blogs),
+                }),
+            )
+            .catch(next);
+    }
+
+    // [GET]-/me/trash/blogs
+    trashBlogs(req, res, next) {
+        Blog.findDeleted({})
+            .then((blogs) =>
+                res.render('me/trash-blogs', {
+                    blogs: mongoosesToObject(blogs),
+                }),
+            )
+            .catch(next);
+    }
+}
+
+module.exports = new MeController();

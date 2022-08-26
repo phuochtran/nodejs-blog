@@ -1,0 +1,91 @@
+<div class="mt-4">
+    <div>
+        <h3>Recycle Bin</h3>
+        <a href="/me/stored/blogs">Back</a>
+    </div>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Slug</th>
+                <th scope="col">Deleted At</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each blogs}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.title}}</td>
+                <td>{{this.slug}}</td>
+                <td>{{this.deletedAt}}</td>
+                <td>
+                    <a href="" class="btn btn-link btn-restore-blog" data-id="{{this._id}}">Restore</a>
+                    <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}"
+                        data-target="#delete-blog-modal">Force Delete</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">
+                    Recycle Bin is empty ...
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- confirm delete blog --}}
+<div id="delete-blog-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Force Delete Blog</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>This blog will not be able to be restored.</p>
+                <p>Do you want to permanently delete this blog for sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-blog" type="button" class="btn btn-danger">Permanently Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="delete-blog-form" method="POST"></form>
+<form name="restore-blog-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var blogId;
+        var deleteForm = document.forms['delete-blog-form']
+        var restoreForm = document.forms['restore-blog-form']
+        var btnDeleteBlog = document.getElementById('btn-delete-blog')
+        var btnRestoreBlog = $('.btn-restore-blog')
+
+        $('#delete-blog-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            blogId = button.data('id')
+        })
+
+        btnDeleteBlog.onclick = function () {
+            deleteForm.action = '/blog/' + blogId + '/force?_method=DELETE'
+            deleteForm.submit()
+        }
+
+        btnRestoreBlog.click(function (event) {
+            event.preventDefault()
+            var blogId = $(this).data('id')
+            restoreForm.action = '/blog/' + blogId + '/restore?_method=PATCH'
+            restoreForm.submit()
+        })
+    })
+</script>
